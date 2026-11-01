@@ -1,0 +1,246 @@
+@import "tailwindcss";
+
+:root {
+  --ink: #0b1014;
+  --candle: #e8c56b;
+  --candle-dim: #a8843a;
+  --parchment: #d7c7a0;
+  --storm: #7eb0c8;
+  --wood: #5c3a22;
+  --mist: rgba(180, 210, 220, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  background: var(--ink);
+  color: var(--parchment);
+  font-family: var(--font-ui), system-ui, sans-serif;
+  overflow: hidden;
+}
+
+.stage {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  isolation: isolate;
+}
+
+.scene-canvas,
+.scene-fallback {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.scene-canvas canvas {
+  touch-action: none;
+}
+
+.scene-fallback {
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(ellipse at 50% 30%, #1a2228 0%, var(--ink) 70%);
+  color: var(--candle-dim);
+  font-family: var(--font-display), serif;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  animation: pulse-fade 2.4s ease-in-out infinite;
+}
+
+.overlay {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  padding: clamp(1.25rem, 3vw, 2.5rem);
+  /* No full-screen brown wash — keep the atlas readable */
+  background: none;
+}
+
+.overlay__brand h1 {
+  margin: 0.15rem 0 0;
+  font-family: var(--font-display), serif;
+  font-weight: 600;
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  letter-spacing: 0.08em;
+  line-height: 0.95;
+  color: var(--candle);
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.55);
+}
+
+.overlay__eyebrow {
+  margin: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--storm);
+  opacity: 0.85;
+}
+
+.overlay__story {
+  align-self: end;
+  max-width: 28rem;
+  animation: rise-in 0.7s ease both;
+}
+
+.overlay__story.is-live h2 {
+  color: var(--storm);
+}
+
+.overlay__age {
+  margin: 0 0 0.35rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--candle-dim);
+}
+
+.overlay__story h2 {
+  margin: 0;
+  font-family: var(--font-display), serif;
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--parchment);
+}
+
+.overlay__line {
+  margin: 0.55rem 0 0;
+  font-weight: 300;
+  font-size: 1.02rem;
+  line-height: 1.45;
+  color: rgba(215, 199, 160, 0.82);
+  max-width: 24rem;
+}
+
+.overlay__actions {
+  pointer-events: auto;
+  justify-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.btn {
+  appearance: none;
+  border: 1px solid rgba(232, 197, 107, 0.45);
+  background: linear-gradient(180deg, rgba(50, 36, 18, 0.92), rgba(24, 16, 10, 0.95));
+  color: var(--candle);
+  font-family: var(--font-display), serif;
+  font-size: 0.92rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.9rem 1.4rem;
+  cursor: pointer;
+  transition:
+    border-color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+}
+
+.btn:hover {
+  border-color: var(--candle);
+  transform: translateY(-1px);
+  box-shadow:
+    0 10px 32px rgba(0, 0, 0, 0.4),
+    0 0 24px rgba(232, 197, 107, 0.12);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.overlay__hint {
+  margin: 0;
+  font-size: 0.85rem;
+  color: rgba(180, 210, 220, 0.7);
+  letter-spacing: 0.04em;
+}
+
+.overlay__hint--pulse {
+  animation: pulse-fade 2s ease-in-out infinite;
+}
+
+.marker-card {
+  pointer-events: none;
+  min-width: 180px;
+  max-width: 220px;
+  padding: 0.75rem 0.9rem;
+  background: rgba(12, 16, 18, 0.92);
+  border: 1px solid rgba(201, 162, 39, 0.35);
+  color: var(--parchment);
+  font-family: var(--font-ui), system-ui, sans-serif;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+}
+
+.marker-card__region {
+  margin: 0;
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--candle-dim);
+}
+
+.marker-card h3 {
+  margin: 0.2rem 0 0.35rem;
+  font-family: var(--font-display), serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--candle);
+}
+
+.marker-card p:last-child {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: rgba(215, 199, 160, 0.8);
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-fade {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 0.95;
+  }
+}
+
+@media (max-width: 640px) {
+  .overlay {
+    padding: 1rem;
+  }
+
+  .overlay__brand h1 {
+    letter-spacing: 0.05em;
+  }
+
+  .btn {
+    width: 100%;
+    text-align: center;
+  }
+}
